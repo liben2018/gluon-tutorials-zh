@@ -1,4 +1,4 @@
-# 循环神经网络——使用Gluon
+# 循环神经网络的Gluon实现
 
 本节介绍如何使用Gluon训练循环神经网络。
 
@@ -11,10 +11,9 @@
 
 ```{.python .input  n=1}
 import sys
-sys.path.append('..')
+sys.path.insert(0, '..')
+
 import gluonbook as gb
-import math
-import mxnet as mx
 from mxnet import autograd, gluon, init, nd
 from mxnet.gluon import loss as gloss, nn, rnn, utils as gutils
 import numpy as np
@@ -114,8 +113,8 @@ class RNNModel(nn.Block):
                 self.rnn = rnn.GRU(num_hiddens, num_layers, dropout=drop_prob,
                                    input_size=embed_size)
             else:
-                raise ValueError("Invalid mode %s. Options are rnn_relu, "
-                                 "rnn_tanh, lstm, and gru" % mode)
+                raise ValueError('Invalid mode %s. Options are rnn_relu, '
+                                 'rnn_tanh, lstm, and gru' % mode)
             self.dense = nn.Dense(vocab_size, in_units=num_hiddens)
             self.num_hiddens = num_hiddens
 
@@ -163,7 +162,7 @@ loss = gloss.SoftmaxCrossEntropyLoss()
 ```{.python .input  n=7}
 def batchify(data, batch_size):
     num_batches = data.shape[0] // batch_size
-    data = data[:num_batches*batch_size]
+    data = data[: num_batches * batch_size]
     data = data.reshape((batch_size, num_batches)).T
     return data
 
@@ -172,13 +171,13 @@ val_data = batchify(corpus.valid, batch_size).as_in_context(ctx)
 test_data = batchify(corpus.test, batch_size).as_in_context(ctx)
 
 def get_batch(source, i):
-    seq_len = min(num_steps, source.shape[0]-1-i)
-    X = source[i : i+seq_len]
-    Y = source[i+1 : i+1+seq_len]
+    seq_len = min(num_steps, source.shape[0] - 1 - i)
+    X = source[i : i + seq_len]
+    Y = source[i + 1 : i + 1 + seq_len]
     return X, Y.reshape((-1,))
 ```
 
-[“循环神经网络——从零开始”](rnn-scratch.md)一节里已经解释了，相邻采样应在每次读取小批量前将隐藏状态从计算图分离出来。
+[“循环神经网络”](rnn.md)一节里已经解释了，相邻采样应在每次读取小批量前将隐藏状态从计算图分离出来。
 
 ```{.python .input  n=8}
 def detach(state):
@@ -227,8 +226,8 @@ def train_rnn():
                 l = loss(output, y).sum() / (batch_size * num_steps)
             l.backward()
             grads = [p.grad(ctx) for p in model.collect_params().values()]
-            # 梯度裁剪。需要注意的是，这里的梯度是整个批量的梯度。
-            # 因此我们将 clipping_theta 乘以 num_steps 和 batch_size。
+            # 梯度裁剪。需要注意的是，这里的梯度是整个批量的梯度。 因此我们将
+            # clipping_theta 乘以 num_steps 和 batch_size。
             gutils.clip_global_norm(
                 grads, clipping_theta * num_steps * batch_size)
             trainer.step(1)
@@ -262,7 +261,7 @@ print('test loss %.2f, perplexity %.2f'
 
 ## 练习
 
-* 回忆[“模型参数的访问、初始化和共享”](../chapter_gluon-basics/parameters.md)一节中有关共享模型参数的描述。将本节中RNNModel类里的`self.dense`的定义改为`nn.Dense(vocab_size, in_units = num_hiddens, params=self.embedding.params)`并运行本节实验。这里为什么可以共享词向量参数？有哪些好处？
+* 回忆[“模型参数的访问、初始化和共享”](../chapter_deep-learning-computation/parameters.md)一节中有关共享模型参数的描述。将本节中RNNModel类里的`self.dense`的定义改为`nn.Dense(vocab_size, in_units = num_hiddens, params=self.embedding.params)`并运行本节实验。这里为什么可以共享词向量参数？有哪些好处？
 
 * 调调超参数，观察并分析对运行时间以及训练集、验证集和测试集上困惑度的影响。
 

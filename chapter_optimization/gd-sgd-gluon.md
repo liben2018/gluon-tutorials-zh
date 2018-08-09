@@ -1,4 +1,4 @@
-# 梯度下降和随机梯度下降——使用Gluon
+# 梯度下降和随机梯度下降的Gluon实现
 
 在Gluon里，使用小批量随机梯度下降很方便，我们无需重新实现该算法。特别地，当批量大小等于数据集样本数时，该算法即为梯度下降；批量大小为1即为随机梯度下降。
 
@@ -6,7 +6,9 @@
 
 ```{.python .input}
 import sys
-sys.path.append('..')
+sys.path.insert(0, '..')
+
+%matplotlib inline
 import gluonbook as gb
 from mxnet import autograd, gluon, init, nd
 from mxnet.gluon import nn, data as gdata, loss as gloss
@@ -40,7 +42,7 @@ def optimize(batch_size, trainer, num_epochs, decay_epoch, log_interval,
     data_iter = gdata.DataLoader(dataset, batch_size, shuffle=True)
     loss = gloss.L2Loss()
     ls = [loss(net(features), labels).mean().asnumpy()]
-    for epoch in range(1, num_epochs + 1): 
+    for epoch in range(1, num_epochs + 1):
         # 学习率自我衰减。
         if decay_epoch and epoch > decay_epoch:
             trainer.set_learning_rate(trainer.learning_rate * 0.1)
@@ -51,13 +53,13 @@ def optimize(batch_size, trainer, num_epochs, decay_epoch, log_interval,
             trainer.step(batch_size)
             if batch_i * batch_size % log_interval == 0:
                 ls.append(loss(net(features), labels).mean().asnumpy())
-    # 为了便于打印，改变输出形状并转化成numpy数组。
+    # 为了便于打印，改变输出形状并转化成NumPy数组。
     print('w:', net[0].weight.data(), '\nb:', net[0].bias.data(), '\n')
     es = np.linspace(0, num_epochs, len(ls), endpoint=True)
     gb.semilogy(es, ls, 'epoch', 'loss')
 ```
 
-以下几组实验分别重现了["梯度下降和随机梯度下降——从零开始"](gd-sgd-scratch.md)一节中实验结果。
+我们将`optimize`函数定义在`gluonbook`包中供后面章节调用。以下几组实验分别重现了["梯度下降和随机梯度下降"](gd-sgd.md)一节中实验结果。
 
 ```{.python .input  n=3}
 net.initialize(init.Normal(sigma=0.01), force_reinit=True)

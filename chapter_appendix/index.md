@@ -5,10 +5,11 @@
 .. toctree::
    :maxdepth: 2
 
+   notation
    math
-   python
    jupyter
    aws
    buy-gpu
+   how-to-contribute
    gluonbook
 ```

@@ -5,13 +5,13 @@
 
 ## 在本地编辑和运行本书代码
 
-下面我们介绍如何在本地使用Jupyter Notebook来编辑和运行本书代码。假设本书代码所在的本地路径为“xx/yy/gluon_tutorials_zh/”。在命令行模式下进入该路径（`cd xx/yy/gluon_tutorials_zh`），然后运行命令`jupyter notebook`。这时在浏览器打开 http://localhost:8888 （通常会自动打开）就可以看到Jupyter notebook的界面和本书代码所在的各个文件夹，如图11.1所示。
+下面我们介绍如何在本地使用Jupyter notebook来编辑和运行本书代码。假设本书代码所在的本地路径为“xx/yy/gluon_tutorials_zh-1.0/”。在命令行模式下进入该路径（`cd xx/yy/gluon_tutorials_zh-1.0`），然后运行命令`jupyter notebook`。这时在浏览器打开 http://localhost:8888 （通常会自动打开）就可以看到Jupyter notebook的界面和本书代码所在的各个文件夹，如图11.1所示。
 
 ![本书代码所在的各个文件夹。](../img/jupyter00.png)
 
 
 我们可以通过点击网页上显示的文件夹访问其中的notebook文件。它们的后缀通常是“ipynb”。
-为了简洁起见，我们创建了一个“test.ipynb”文件，点击后将显示其中内容，如图11.2所示。该notebook包括了格式化文本单元（markdown cell）和代码单元（code cell）。其中格式化文本单元中的内容包括“这是标题”和“这是一段正文。”。代码单元中包括两行Python代码。
+为了简洁起见，我们创建一个临时的“test.ipynb”文件，点击后所显示的内容如图11.2所示。该notebook包括了格式化文本单元（markdown cell）和代码单元（code cell）。其中格式化文本单元中的内容包括“这是标题”和“这是一段正文。”。代码单元中包括两行Python代码。
 
 ![“test.ipynb”文件包括了格式化文本单元和代码单元。](../img/jupyter01.png)
 
@@ -50,7 +50,7 @@
 
 ### 用Jupyter Notebook读写GitHub源文件
 
-如果你希望为本书内容做贡献，需要修改在GitHub上Markdown格式的源文件（.md文件非.ipynb文件）。通过notedown插件，我们就可以使用Jupyter Notebook修改并运行Markdown格式的源代码。Linux/macOS用户可以执行以下命令获得GitHub源文件并激活运行环境。
+如果你希望为本书内容做贡献，需要修改在GitHub上markdown格式的源文件（.md文件非.ipynb文件）。通过notedown插件，我们就可以使用Jupyter notebook修改并运行markdown格式的源代码。Linux/macOS用户可以执行以下命令获得GitHub源文件并激活运行环境。
 
 ```
 git clone https://github.com/mli/gluon-tutorials-zh
@@ -59,22 +59,22 @@ conda env create -f environment.yml
 source activate gluon # Windows 用户运行 activate gluon
 ```
 
-下面安装notedown插件，运行Jupyter Notebook并加载插件：
+下面安装notedown插件，运行Jupyter notebook并加载插件：
 
 ```
 pip install https://github.com/mli/notedown/tarball/master
 jupyter notebook --NotebookApp.contents_manager_class='notedown.NotedownContentsManager'
 ```
 
-如果你希望每次运行Jupyter Notebook时默认开启notedown插件，可以参考下面步骤。
+如果你希望每次运行Jupyter notebook时默认开启notedown插件，可以参考下面步骤。
 
-首先，执行下面命令生成Jupyter Notebook配置文件（如果已经生成可以跳过）。
+首先，执行下面命令生成Jupyter notebook配置文件（如果已经生成可以跳过）。
 
 ```
 jupyter notebook --generate-config
 ```
 
-然后，将下面这一行加入到Jupyter Notebook配置文件的末尾（Linux/macOS上一般在`~/.jupyter/jupyter_notebook_config.py`)
+然后，将下面这一行加入到Jupyter notebook配置文件的末尾（Linux/macOS上一般在`~/.jupyter/jupyter_notebook_config.py`)
 
 ```
 c.NotebookApp.contents_manager_class = 'notedown.NotedownContentsManager'
@@ -85,17 +85,17 @@ c.NotebookApp.contents_manager_class = 'notedown.NotedownContentsManager'
 
 ### 在远端服务器上运行Jupyter Notebook
 
-有时候，我们希望在远端服务器上运行Jupyter Notebook，并通过本地电脑上的浏览器访问。如果本地机器上安装了Linux或者macOS（Windows通过第三方软件例如putty应该也能支持），那么可以使用端口映射：
+有时候，我们希望在远端服务器上运行Jupyter notebook，并通过本地电脑上的浏览器访问。如果本地机器上安装了Linux或者macOS（Windows通过putty等第三方软件也能支持），那么可以使用端口映射：
 
 ```
 ssh myserver -L 8888:localhost:8888
 ```
 
-以上`myserver`是远端服务器地址。然后我们可以使用 http://localhost:8888 打开远端服务器`myserver`上运行Jupyter Notebook。
+以上`myserver`是远端服务器地址。然后我们可以使用 http://localhost:8888 打开运行Jupyter notebook的远端服务器`myserver`。我们将在下一节详细介绍如何在AWS实例上运行Jupyter notebook。
 
 ### 运行计时
 
-我们可以通过ExecutionTime插件来对Jupyter Notebook的每个代码单元的运行计时。以下是安装该插件的命令。
+我们可以通过ExecutionTime插件来对Jupyter notebook的每个代码单元的运行计时。以下是安装该插件的命令。
 
 ```
 pip install jupyter_contrib_nbextensions
